@@ -3,7 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "compile": "bun run tsc --noEmit src/index.ts",
+    "compile": "bun run tsc --noEmit",
     "start": "bun run src/index.ts",
     "format": "bunx --bun @biomejs/biome check --write ./src",
     "check": "bunx --bun @biomejs/biome check ./src"
