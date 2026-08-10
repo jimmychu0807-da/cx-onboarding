@@ -28,6 +28,35 @@ The full create and exercise event is [here](./update-tracing/transfer-initiated
    - contract ID: **00e12349f09a916b329cb41b7bbf44e81033d01a25b70787251e90965e3799539eca1212205f117a0f2c7160aecb9b53aa67d0dbfdff9418e06ebc04768b978d17e39ea7a8**
 	 - for the receiver to accept the instruction
 
+## Normal Transfer Accepted
+
+1. Splice.Wallet.Install:WalletAppInstall
+	 - choice: **WalletAppInstall_TransferInstruction_Accept**
+
+2. Splice.AmuletTransferInstruction:AmuletTransferInstruction
+   - choice: **TransferInstruction_Accept**
+
+3. Splice.Amulet:LockedAmulet
+	 - choice: **LockedAmulet_UnlockV2**
+
+4. Splice.Amulet:Amulet created, with
+   - initialAmount: 100
+   - owner: sender
+
+5. AmuletEventLog:AmuletEventLog created
+
+6. AmuletEventLog:AmuletEventLog exercised,
+   - choice: **EventLog_HoldingsChange**
+
+7. AmuletEventLog:AmuletEventLog archived
+
+8. Splice.Amulet:Amulet
+   - receiver balance updated
+ 
+9. Eventlog
+
+10. Splice.Api.Token.TransferEventsV2:EventLog
+
 ## Transfer Preapproval
 
 For a preapproval, the following contract and exercise choices are involved.
@@ -52,7 +81,7 @@ The full create and exercise events can be seen at: [`update-tracing/transfer-pr
 4. Create a Splice.AmuletRules:TransferPreapproval contract
 	- the transfer preapproval is valid for 90 days
 
-## Transfer after Transfer Preapproval
+## One-step Transfer after Transfer Preapproval
 
 Now when a sender transfer token to the sender with preapproval, the following flow happens.
 
