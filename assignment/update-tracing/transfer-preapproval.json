@@ -1,0 +1,240 @@
+{
+  "update": {
+    "Transaction": {
+      "value": {
+        "updateId": "1220287ad1bb896bfddd8370229fd98e3e1bad59d70a7b180539e3af112d3b30fe93",
+        "commandId": "org.lfdecentralizedtrust.splice.validator.acceptTransferPreapprovalProposal_d16e213f97a538aa700948a239fa06fc6d0ae4f84d64f4b7380528b275a4347e",
+        "workflowId": "",
+        "effectiveAt": "2026-08-10T02:52:25.426894Z",
+        "events": [
+          {
+            "ExercisedEvent": {
+              "offset": 77,
+              "nodeId": 0,
+              "contractId": "00012407c762b755fb368e48d0a224576fab53737c6bb346b0fa7b36eb41967d5aca121220237dec364dbcbf04ba46d14fa18df020b4e24043a2d6287d11880b180e64e985",
+              "templateId": "727c0fb9711d59b506fbb3cff2342e55eb583bb88682a946220525c304feca4a:Splice.Wallet.Install:WalletAppInstall",
+              "interfaceId": null,
+              "choice": "WalletAppInstall_ExecuteBatch",
+              "choiceArgument": {
+                "context": {
+                  "amuletRules": "00c4f3f7ab3b4d60621d292909d4f70d5daeb22ada0bcb7610df584398714c4ea7ca121220cdff3fbc7d1e9fe98f97fee7d1a1ddaebfd288ccd2507089b451f4b1b81530a7",
+                  "context": {
+                    "openMiningRound": "0083056adf85c2df1476e5f6981a687505f17333f7475a7f6b48746575c5aeb475ca1212203b53d5eb16478f8593dcee297c2497ac101ade96bc539550b5d7469ee9fb20d9",
+                    "issuingMiningRounds": [],
+                    "validatorRights": []
+                  }
+                },
+                "inputs": [
+                  {
+                    "tag": "InputAmulet",
+                    "value": "0079ed022a9405cf378b19ed63e48a8d7bdc066f85f386ec00783bfe6687370826ca1212203aae70e6ed553c5f0e67bcfc1c9e3250409200d5767d7dca028ab500e4a34ffb"
+                  }
+                ],
+                "operations": [
+                  {
+                    "tag": "CO_AcceptTransferPreapprovalProposal",
+                    "value": {
+                      "preapprovalProposalCid": "00fe32fb879d6b685972480c874d5e185d1f21d5f11be2649dfff24e1521cb5a52ca121220668285dccff5138793fa85e3905fbf6489f58b4cc7a86d78669e1b802f3a2f32",
+                      "expiresAt": "2026-11-08T02:52:25.412626Z"
+                    }
+                  }
+                ]
+              },
+              "actingParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 5,
+              "exerciseResult": {
+                "endUserName": "app-user",
+                "outcomes": [
+                  {
+                    "tag": "COO_AcceptTransferPreapprovalProposal",
+                    "value": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613"
+                  }
+                ],
+                "optEndUserParty": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              },
+              "packageName": "splice-wallet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 77,
+              "nodeId": 1,
+              "contractId": "00fe32fb879d6b685972480c874d5e185d1f21d5f11be2649dfff24e1521cb5a52ca121220668285dccff5138793fa85e3905fbf6489f58b4cc7a86d78669e1b802f3a2f32",
+              "templateId": "727c0fb9711d59b506fbb3cff2342e55eb583bb88682a946220525c304feca4a:Splice.Wallet.TransferPreapproval:TransferPreapprovalProposal",
+              "interfaceId": null,
+              "choice": "TransferPreapprovalProposal_Accept",
+              "choiceArgument": {
+                "context": {
+                  "amuletRules": "00c4f3f7ab3b4d60621d292909d4f70d5daeb22ada0bcb7610df584398714c4ea7ca121220cdff3fbc7d1e9fe98f97fee7d1a1ddaebfd288ccd2507089b451f4b1b81530a7",
+                  "context": {
+                    "openMiningRound": "0083056adf85c2df1476e5f6981a687505f17333f7475a7f6b48746575c5aeb475ca1212203b53d5eb16478f8593dcee297c2497ac101ade96bc539550b5d7469ee9fb20d9",
+                    "issuingMiningRounds": [],
+                    "validatorRights": []
+                  }
+                },
+                "inputs": [
+                  {
+                    "tag": "InputAmulet",
+                    "value": "0079ed022a9405cf378b19ed63e48a8d7bdc066f85f386ec00783bfe6687370826ca1212203aae70e6ed553c5f0e67bcfc1c9e3250409200d5767d7dca028ab500e4a34ffb"
+                  }
+                ],
+                "expiresAt": "2026-11-08T02:52:25.412626Z"
+              },
+              "actingParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": true,
+              "witnessParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 5,
+              "exerciseResult": {
+                "transferPreapprovalCid": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613",
+                "transferResult": {
+                  "round": {
+                    "number": "1"
+                  },
+                  "summary": {
+                    "inputAppRewardAmount": "0.0000000000",
+                    "inputValidatorRewardAmount": "0.0000000000",
+                    "inputSvRewardAmount": "0.0000000000",
+                    "inputAmuletAmount": "0.0000000000",
+                    "balanceChanges": [],
+                    "holdingFees": "0.0000000000",
+                    "outputFees": [],
+                    "senderChangeFee": "0.0000000000",
+                    "senderChangeAmount": "0.0000000000",
+                    "amuletPrice": "0.0050000000"
+                  },
+                  "createdAmulets": []
+                },
+                "amuletPaid": "0.0000000000"
+              },
+              "packageName": "splice-wallet",
+              "implementedInterfaces": [],
+              "acsDelta": true
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 77,
+              "nodeId": 2,
+              "contractId": "00c4f3f7ab3b4d60621d292909d4f70d5daeb22ada0bcb7610df584398714c4ea7ca121220cdff3fbc7d1e9fe98f97fee7d1a1ddaebfd288ccd2507089b451f4b1b81530a7",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.AmuletRules:AmuletRules",
+              "interfaceId": null,
+              "choice": "AmuletRules_CreateTransferPreapproval",
+              "choiceArgument": {
+                "context": {
+                  "amuletRules": "00c4f3f7ab3b4d60621d292909d4f70d5daeb22ada0bcb7610df584398714c4ea7ca121220cdff3fbc7d1e9fe98f97fee7d1a1ddaebfd288ccd2507089b451f4b1b81530a7",
+                  "context": {
+                    "openMiningRound": "0083056adf85c2df1476e5f6981a687505f17333f7475a7f6b48746575c5aeb475ca1212203b53d5eb16478f8593dcee297c2497ac101ade96bc539550b5d7469ee9fb20d9",
+                    "issuingMiningRounds": [],
+                    "validatorRights": []
+                  }
+                },
+                "inputs": [
+                  {
+                    "tag": "InputAmulet",
+                    "value": "0079ed022a9405cf378b19ed63e48a8d7bdc066f85f386ec00783bfe6687370826ca1212203aae70e6ed553c5f0e67bcfc1c9e3250409200d5767d7dca028ab500e4a34ffb"
+                  }
+                ],
+                "receiver": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "provider": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "expiresAt": "2026-11-08T02:52:25.412626Z",
+                "expectedDso": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "optCreatedAt": "2026-08-10T02:52:25.426894Z"
+              },
+              "actingParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9"
+              ],
+              "lastDescendantNodeId": 5,
+              "exerciseResult": {
+                "transferPreapprovalCid": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613",
+                "transferResult": {
+                  "round": {
+                    "number": "1"
+                  },
+                  "summary": {
+                    "inputAppRewardAmount": "0.0000000000",
+                    "inputValidatorRewardAmount": "0.0000000000",
+                    "inputSvRewardAmount": "0.0000000000",
+                    "inputAmuletAmount": "0.0000000000",
+                    "balanceChanges": [],
+                    "holdingFees": "0.0000000000",
+                    "outputFees": [],
+                    "senderChangeFee": "0.0000000000",
+                    "senderChangeAmount": "0.0000000000",
+                    "amuletPrice": "0.0050000000"
+                  },
+                  "createdAmulets": []
+                },
+                "amuletPaid": "0.0000000000",
+                "meta": {
+                  "values": {}
+                }
+              },
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          },
+          {
+            "CreatedEvent": {
+              "offset": 77,
+              "nodeId": 5,
+              "contractId": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.AmuletRules:TransferPreapproval",
+              "contractKey": null,
+              "contractKeyHash": "",
+              "createArgument": {
+                "dso": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "receiver": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "provider": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "validFrom": "2026-08-10T02:52:25.426894Z",
+                "lastRenewedAt": "2026-08-10T02:52:25.426894Z",
+                "expiresAt": "2026-11-08T02:52:25.412626Z"
+              },
+              "createdEventBlob": "",
+              "interfaceViews": [],
+              "witnessParties": [
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9"
+              ],
+              "signatories": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "observers": [],
+              "createdAt": "2026-08-10T02:52:25.426894Z",
+              "packageName": "splice-amulet",
+              "representativePackageId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a",
+              "acsDelta": true
+            }
+          }
+        ],
+        "offset": 77,
+        "synchronizerId": "global-domain::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+        "traceContext": {
+          "traceparent": "00-0698223ab9dd364219c06d028cd99621-c4c7b9c6251cd6f5-03",
+          "tracestate": null
+        },
+        "recordTime": "2026-08-10T02:52:25.461209Z",
+        "externalTransactionHash": null,
+        "paidTrafficCost": 6552
+      }
+    }
+  }
+}

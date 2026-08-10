@@ -62,6 +62,22 @@ program
   });
 
 program
+  .command("get-update-by-id")
+  .description("Get the update by updateID")
+  .argument("<update-id", "Update ID")
+  .action(async (updateId) => {
+    const { ledgerEndpoint, useHttps, accessToken } = conf;
+
+    const api = new CantonLedgerApi(ledgerEndpoint, {
+      useHttps: useHttps.toUpperCase() === "TRUE",
+      accessToken,
+    });
+
+    const result = await api.getUpdateById(updateId);
+    console.dir(result, { depth: null, colors: true });
+  });
+
+program
   .command("get-authenticated-user")
   .description("Get authenticated user of the provided access token")
   .action(async () => {
@@ -96,10 +112,9 @@ program
   .command("set-user-rights")
   .description("Set the user rights for the particular user ID")
   .argument("<user-id>", "User ID")
-  .requiredOption("-i, --input <path>", "input command JSON filepath")
-  .action(async (userId, opts) => {
+  .argument("<user-right-path>", "Path to user rights object")
+  .action(async (userId, inputFilePath) => {
     const { ledgerEndpoint, useHttps, accessToken } = conf;
-    const { input: inputFilePath } = opts;
     const inputFile = await readFile(inputFilePath, "utf8");
     const rightsObj = JSON.parse(inputFile);
 

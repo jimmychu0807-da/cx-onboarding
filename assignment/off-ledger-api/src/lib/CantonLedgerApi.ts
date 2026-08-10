@@ -34,6 +34,10 @@ const mapping = {
     method: "POST",
     endpoint: "/v2/updates",
   },
+  getUpdateById: {
+    method: "POST",
+    endpoint: "/v2/updates/update-by-id",
+  },
   getLedgerEnd: {
     method: "GET",
     endpoint: "/v2/state/ledger-end",
@@ -99,7 +103,7 @@ export class CantonLedgerApi {
   server: string;
   opts: CantonLedgerApiOpts;
 
-  constructor(server: string, opts: CantonLedgerApiOptions) {
+  constructor(server: string, opts: CantonLedgerApiOpts) {
     this.server = server;
     this.opts = opts;
   }
@@ -236,6 +240,32 @@ export class CantonLedgerApi {
         Authorization: `Bearer ${this.opts.accessToken}`,
         "Content-Type": "application/octet-stream",
       },
+      signal: AbortSignal.timeout(TIMEOUT),
+      verbose: VERBOSE,
+    });
+    return await response.json();
+  }
+
+  public async getUpdateById(updateId: string) {
+    const { method, endpoint } = mapping.getUpdateById;
+    const response = await fetch(this.getFullEndpoint(endpoint), {
+      method,
+      headers: {
+        Authorization: `Bearer ${this.opts.accessToken}`,
+        "Content-Type": "application/octet-stream",
+      },
+      body: JSON.stringify({
+        updateId,
+        updateFormat: {
+          includeTransactions: {
+            eventFormat: {
+              filtersForAnyParty: {},
+              verbose: true,
+            },
+            transactionShape: "TRANSACTION_SHAPE_LEDGER_EFFECTS",
+          },
+        },
+      }),
       signal: AbortSignal.timeout(TIMEOUT),
       verbose: VERBOSE,
     });

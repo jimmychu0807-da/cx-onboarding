@@ -1,0 +1,19 @@
+{
+  "userId": ":user-id",
+  "rights": [
+    {
+      "kind": {
+        "CanReadAsAnyParty": {
+          "value": {}
+        }
+      }
+    },
+    {
+      "kind": {
+        "CanExecuteAsAnyParty": {
+          "value": {}
+        }
+      }
+    }
+  ]
+}

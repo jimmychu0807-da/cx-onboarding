@@ -588,3 +588,41 @@ Category 6-7: they are on authentication & permission related errors.
 Category 8: Invalid JWT user token.
 
 Category 9 - 12 are related to state-dependent and likely depend on the application design.
+
+# Focus: Canton Coin, Token Stardard V1, Token Standard V2
+
+## Hand-on: Set up transfer preapproval on localnet. How does transfer preapproval change the transfer workflow?
+
+Transfer in high-level is a two-transaciton process.
+
+The first tx is the "sent" side:
+
+- the sender create a transfer instruction, lock his own balance (called Amulet) in Canton space, and have his own free balance updated. Some event logs are also created.
+
+The second tx is the receiver side:
+
+- He accepts the transfer instruction (**AmuletTransferInstruction**) created by the sender. Then unlock the locked amulet. A new amulet contract is created to reflect the receiver new balance. Along the way, some event log choices (**EventLog_HoldingsChange**) are being exercised.
+
+
+With the preapproval made, this become a single transaction. 
+
+The receiver will have a **TransferPreapproval** contract created. The sender will exercise the choice **TransferFactory_Transfer** from ExternalPartyAmuletRules, and then call **TransferPreapproval_SendV2** of the receiver TransferPreapproval contract.
+
+Then, a few amulet contracts are created and archived to reflect the latest balance of the sender and receiver, as well as a few **EventLog_HoldingsChange** choices exercised.
+
+## Theory - What ledger commands establish the transfer preapproval? What automations are involved? What Daml design pattern is used here?
+
+The splice-wallet:Splice.Wallet.TransferPreapproval: TransferPreapprovalProposal contract should be first created by the provider, and then the receiver executes the **TransferPreapprovalProposal_Accept** choice. 
+
+The src of the daml code is [seen here](https://github.com/canton-network/splice/blob/main/daml/splice-wallet/daml/Splice/Wallet/TransferPreapproval.daml).
+
+This is the typical propose-accept pattern.
+
+## Theory - the token standard APIs for metadata, holdings, and transfers. What API call(s) are required to perform a token standard transfer of Canton Coin?
+
+
+# Focus: Wallet SDK, wallet gateway
+
+# Focus: Registry app and dAppified registry UI
+
+# Focus: External party allocation - different permissions + confirmation thresholds

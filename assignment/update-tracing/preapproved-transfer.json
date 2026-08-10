@@ -1,0 +1,443 @@
+{
+  "update": {
+    "Transaction": {
+      "value": {
+        "updateId": "1220bc842efe5f82ef1a48288b21412da0ac13ee2d787180db42d8b1e5de4e46af76",
+        "commandId": "org.lfdecentralizedtrust.splice.wallet.createTokenStandardTransfer_027025fade55e7f7336487caa549467dbc09ef2f1f9a7317a19539bba6bf9e5d",
+        "workflowId": "",
+        "effectiveAt": "2026-08-10T07:01:42.414775Z",
+        "events": [
+          {
+            "ExercisedEvent": {
+              "offset": 794,
+              "nodeId": 0,
+              "contractId": "0077b6c1d462bb989ccf5bcea8b925f4160b154b7cbff3d5735b1ee25744a6356fca121220654b11f738654aed26c595d45e77ee899dba78250883d68d60756d03f4eaca6c",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.ExternalPartyAmuletRules:ExternalPartyAmuletRules",
+              "interfaceId": "55ba4deb0ad4662c4168b39859738a0e91388d252286480c7331b3f71a517281:Splice.Api.Token.TransferInstructionV1:TransferFactory",
+              "choice": "TransferFactory_Transfer",
+              "choiceArgument": {
+                "expectedAdmin": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "transfer": {
+                  "sender": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                  "receiver": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                  "amount": "100.0000000000",
+                  "instrumentId": {
+                    "admin": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                    "id": "Amulet"
+                  },
+                  "requestedAt": "2026-08-10T07:01:42.28765Z",
+                  "executeBefore": "2026-08-11T07:01:42.25Z",
+                  "inputHoldingCids": [
+                    "0037c7e48d0276eeb53d6dc0787306cf09e19a4f5d05a47aa66676e3d3ffde951dca121220a07b435e0fb6ba30b590ad68b770d663a1b59f8f03e63de70a3081df1ba7cb45"
+                  ],
+                  "meta": {
+                    "values": {
+                      "splice.lfdecentralizedtrust.org/reason": "Testing desc"
+                    }
+                  }
+                },
+                "extraArgs": {
+                  "context": {
+                    "values": {
+                      "amulet-rules": {
+                        "tag": "AV_ContractId",
+                        "value": "00c4f3f7ab3b4d60621d292909d4f70d5daeb22ada0bcb7610df584398714c4ea7ca121220cdff3fbc7d1e9fe98f97fee7d1a1ddaebfd288ccd2507089b451f4b1b81530a7"
+                      },
+                      "external-party-config-state": {
+                        "tag": "AV_ContractId",
+                        "value": "00a4f919e4dc281bce2b50e9a932237a0041e2122cd042d25b6030251bc5482e76ca1212206364ea246b5e7143d6888244bc144b6f16cd80b05126f24d07772d5cc3a79b2e"
+                      },
+                      "open-round": {
+                        "tag": "AV_ContractId",
+                        "value": "005b7200613146850e28a41a8353d9310087ef76cd3938b4d4d0da605adddf7ca9ca121220b8710ea177781d35e884fe7e8f6ae2a335f61e882f490e4ba82f721f05e696cf"
+                      },
+                      "transfer-preapproval": {
+                        "tag": "AV_ContractId",
+                        "value": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613"
+                      }
+                    }
+                  },
+                  "meta": {
+                    "values": {}
+                  }
+                }
+              },
+              "actingParties": [
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 12,
+              "exerciseResult": {
+                "output": {
+                  "tag": "TransferInstructionResult_Completed",
+                  "value": {
+                    "receiverHoldingCids": [
+                      "00849f7ea2300af59bd3638cd06e6346b39dbf086c50b4ebbb99114b9e81dca7c5ca12122041dc54f57dc20d600ea7e9c89aac3411739e4c92ea2fc292e3ac1a63cee5585d"
+                    ]
+                  }
+                },
+                "senderChangeCids": [
+                  "00517cb3db93d542e340d6f0331d9e078a754486a2feab4b55a916cfdb9640a947ca1212206a3c2295a580ef504b14393916a63f5676754bdec2b8e656c033f515b13975bf"
+                ],
+                "meta": {
+                  "values": {
+                    "splice.lfdecentralizedtrust.org/reason": "Testing desc",
+                    "splice.lfdecentralizedtrust.org/sender": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                    "splice.lfdecentralizedtrust.org/tx-kind": "transfer"
+                  }
+                }
+              },
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 794,
+              "nodeId": 5,
+              "contractId": "00308d88c411f987a75475e8cbd6917fd7dbfda9a4ab8ccd56d82379d0b663a0caca121220f3949d9f7f04d463cf119d4d0d456ea594d247842b6a9456d16d2a7c336cb613",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.AmuletRules:TransferPreapproval",
+              "interfaceId": null,
+              "choice": "TransferPreapproval_SendV2",
+              "choiceArgument": {
+                "context": {
+                  "externalPartyConfigState": "00a4f919e4dc281bce2b50e9a932237a0041e2122cd042d25b6030251bc5482e76ca1212206364ea246b5e7143d6888244bc144b6f16cd80b05126f24d07772d5cc3a79b2e"
+                },
+                "inputs": [
+                  {
+                    "tag": "InputAmulet",
+                    "value": "0037c7e48d0276eeb53d6dc0787306cf09e19a4f5d05a47aa66676e3d3ffde951dca121220a07b435e0fb6ba30b590ad68b770d663a1b59f8f03e63de70a3081df1ba7cb45"
+                  }
+                ],
+                "amount": "100.0000000000",
+                "sender": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "description": "Testing desc",
+                "meta": {
+                  "values": {
+                    "splice.lfdecentralizedtrust.org/reason": "Testing desc"
+                  }
+                }
+              },
+              "actingParties": [
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 12,
+              "exerciseResult": {
+                "result": {
+                  "round": {
+                    "number": "0"
+                  },
+                  "summary": {
+                    "inputAppRewardAmount": "0.0000000000",
+                    "inputValidatorRewardAmount": "0.0000000000",
+                    "inputSvRewardAmount": "0.0000000000",
+                    "inputAmuletAmount": "200000.0000000000",
+                    "balanceChanges": [
+                      [
+                        "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                        {
+                          "changeToInitialAmountAsOfRoundZero": "100.0000000000",
+                          "changeToHoldingFeesRate": "0.0038051800"
+                        }
+                      ],
+                      [
+                        "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                        {
+                          "changeToInitialAmountAsOfRoundZero": "-100.0038051800",
+                          "changeToHoldingFeesRate": "0.0000000000"
+                        }
+                      ]
+                    ],
+                    "holdingFees": "0.0000000000",
+                    "outputFees": [
+                      "0.0000000000"
+                    ],
+                    "senderChangeFee": "0.0000000000",
+                    "senderChangeAmount": "199900.0000000000",
+                    "amuletPrice": "0.0050000000",
+                    "inputValidatorFaucetAmount": "0.0000000000",
+                    "inputUnclaimedActivityRecordAmount": "0.0000000000",
+                    "inputDevelopmentFundAmount": "0.0000000000"
+                  },
+                  "createdAmulets": [
+                    {
+                      "tag": "TransferResultAmulet",
+                      "value": "00849f7ea2300af59bd3638cd06e6346b39dbf086c50b4ebbb99114b9e81dca7c5ca12122041dc54f57dc20d600ea7e9c89aac3411739e4c92ea2fc292e3ac1a63cee5585d"
+                    }
+                  ],
+                  "senderChangeAmulet": "00517cb3db93d542e340d6f0331d9e078a754486a2feab4b55a916cfdb9640a947ca1212206a3c2295a580ef504b14393916a63f5676754bdec2b8e656c033f515b13975bf"
+                },
+                "meta": {
+                  "values": {
+                    "splice.lfdecentralizedtrust.org/reason": "Testing desc",
+                    "splice.lfdecentralizedtrust.org/sender": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                    "splice.lfdecentralizedtrust.org/tx-kind": "transfer"
+                  }
+                }
+              },
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 794,
+              "nodeId": 8,
+              "contractId": "0037c7e48d0276eeb53d6dc0787306cf09e19a4f5d05a47aa66676e3d3ffde951dca121220a07b435e0fb6ba30b590ad68b770d663a1b59f8f03e63de70a3081df1ba7cb45",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.Amulet:Amulet",
+              "interfaceId": null,
+              "choice": "Archive",
+              "choiceArgument": {},
+              "actingParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "consuming": true,
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 8,
+              "exerciseResult": {},
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": true
+            }
+          },
+          {
+            "CreatedEvent": {
+              "offset": 794,
+              "nodeId": 9,
+              "contractId": "00849f7ea2300af59bd3638cd06e6346b39dbf086c50b4ebbb99114b9e81dca7c5ca12122041dc54f57dc20d600ea7e9c89aac3411739e4c92ea2fc292e3ac1a63cee5585d",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.Amulet:Amulet",
+              "contractKey": null,
+              "contractKeyHash": "",
+              "createArgument": {
+                "dso": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "owner": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "amount": {
+                  "initialAmount": "100.0000000000",
+                  "createdAt": {
+                    "number": "0"
+                  },
+                  "ratePerRound": {
+                    "rate": "0.0038051800"
+                  }
+                }
+              },
+              "createdEventBlob": "",
+              "interfaceViews": [],
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "signatories": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "observers": [],
+              "createdAt": "2026-08-10T07:01:42.414775Z",
+              "packageName": "splice-amulet",
+              "representativePackageId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a",
+              "acsDelta": true
+            }
+          },
+          {
+            "CreatedEvent": {
+              "offset": 794,
+              "nodeId": 10,
+              "contractId": "00517cb3db93d542e340d6f0331d9e078a754486a2feab4b55a916cfdb9640a947ca1212206a3c2295a580ef504b14393916a63f5676754bdec2b8e656c033f515b13975bf",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.Amulet:Amulet",
+              "contractKey": null,
+              "contractKeyHash": "",
+              "createArgument": {
+                "dso": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "owner": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "amount": {
+                  "initialAmount": "199900.0000000000",
+                  "createdAt": {
+                    "number": "0"
+                  },
+                  "ratePerRound": {
+                    "rate": "0.0038051800"
+                  }
+                }
+              },
+              "createdEventBlob": "",
+              "interfaceViews": [],
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "signatories": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "observers": [],
+              "createdAt": "2026-08-10T07:01:42.414775Z",
+              "packageName": "splice-amulet",
+              "representativePackageId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a",
+              "acsDelta": true
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 794,
+              "nodeId": 11,
+              "contractId": "00a4f919e4dc281bce2b50e9a932237a0041e2122cd042d25b6030251bc5482e76ca1212206364ea246b5e7143d6888244bc144b6f16cd80b05126f24d07772d5cc3a79b2e",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.ExternalPartyConfigState:ExternalPartyConfigState",
+              "interfaceId": "5c1097a9bad0af4bcfe6d3fb0fe55112d3d11f18eae57ddfb14c20836fee226c:Splice.Api.Token.TransferEventsV2:EventLog",
+              "choice": "EventLog_HoldingsChange",
+              "choiceArgument": {
+                "admin": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "account": {
+                  "owner": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                  "provider": null,
+                  "id": ""
+                },
+                "inputHoldingCids": [],
+                "transferLegSides": [
+                  {
+                    "transferLegId": "leg0",
+                    "side": "ReceiverSide",
+                    "otherside": {
+                      "owner": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                      "provider": null,
+                      "id": ""
+                    },
+                    "amount": "100.0000000000",
+                    "instrumentId": "Amulet",
+                    "meta": {
+                      "values": {
+                        "splice.lfdecentralizedtrust.org/reason": "Testing desc"
+                      }
+                    }
+                  }
+                ],
+                "outputHoldingCids": [
+                  "00849f7ea2300af59bd3638cd06e6346b39dbf086c50b4ebbb99114b9e81dca7c5ca12122041dc54f57dc20d600ea7e9c89aac3411739e4c92ea2fc292e3ac1a63cee5585d"
+                ],
+                "observers": [
+                  "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+                ],
+                "extraArgs": {
+                  "context": {
+                    "values": {}
+                  },
+                  "meta": {
+                    "values": {}
+                  }
+                }
+              },
+              "actingParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 11,
+              "exerciseResult": {},
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          },
+          {
+            "ExercisedEvent": {
+              "offset": 794,
+              "nodeId": 12,
+              "contractId": "00a4f919e4dc281bce2b50e9a932237a0041e2122cd042d25b6030251bc5482e76ca1212206364ea246b5e7143d6888244bc144b6f16cd80b05126f24d07772d5cc3a79b2e",
+              "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.ExternalPartyConfigState:ExternalPartyConfigState",
+              "interfaceId": "5c1097a9bad0af4bcfe6d3fb0fe55112d3d11f18eae57ddfb14c20836fee226c:Splice.Api.Token.TransferEventsV2:EventLog",
+              "choice": "EventLog_HoldingsChange",
+              "choiceArgument": {
+                "admin": "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "account": {
+                  "owner": "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                  "provider": null,
+                  "id": ""
+                },
+                "inputHoldingCids": [
+                  "0037c7e48d0276eeb53d6dc0787306cf09e19a4f5d05a47aa66676e3d3ffde951dca121220a07b435e0fb6ba30b590ad68b770d663a1b59f8f03e63de70a3081df1ba7cb45"
+                ],
+                "transferLegSides": [
+                  {
+                    "transferLegId": "leg0",
+                    "side": "SenderSide",
+                    "otherside": {
+                      "owner": "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                      "provider": null,
+                      "id": ""
+                    },
+                    "amount": "100.0000000000",
+                    "instrumentId": "Amulet",
+                    "meta": {
+                      "values": {
+                        "splice.lfdecentralizedtrust.org/reason": "Testing desc"
+                      }
+                    }
+                  }
+                ],
+                "outputHoldingCids": [
+                  "00517cb3db93d542e340d6f0331d9e078a754486a2feab4b55a916cfdb9640a947ca1212206a3c2295a580ef504b14393916a63f5676754bdec2b8e656c033f515b13975bf"
+                ],
+                "observers": [
+                  "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+                ],
+                "extraArgs": {
+                  "context": {
+                    "values": {}
+                  },
+                  "meta": {
+                    "values": {}
+                  }
+                }
+              },
+              "actingParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9"
+              ],
+              "consuming": false,
+              "witnessParties": [
+                "DSO::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+                "jimmychu0807::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3",
+                "app_user_localnet-localparty-1::1220fdbfd9e22bbe123bf2b07f1f05765e8c0ec088fb0f9302731052d50b31c13af3"
+              ],
+              "lastDescendantNodeId": 12,
+              "exerciseResult": {},
+              "packageName": "splice-amulet",
+              "implementedInterfaces": [],
+              "acsDelta": false
+            }
+          }
+        ],
+        "offset": 794,
+        "synchronizerId": "global-domain::122039a13b75f35438b902107a2cf09c84d00e10ac9948411f945c1364eb089dada9",
+        "traceContext": {
+          "traceparent": "00-b44a3c122b53511db1216214e04143d9-efd6d48bc27993a2-03",
+          "tracestate": null
+        },
+        "recordTime": "2026-08-10T07:01:42.472326Z",
+        "externalTransactionHash": null,
+        "paidTrafficCost": 4782
+      }
+    }
+  }
+}
