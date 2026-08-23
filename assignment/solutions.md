@@ -736,7 +736,33 @@ This is forwarded to the splice container validator **localhost:2903**.
 
 It doesn't take any request body, and use JWT to recognize which user the sender is checking against. It is not the ledger-api-user jwt token but need to construct another JWT for the particular user that you check.
 
-Another endpoint:
+To construct the JWT, user the following params:
+
+header:
+```json
+{"alg": "HS256", "typ": "JWT"}
+```
+
+payload:
+```json
+{
+  "sub": "app-user",
+  "aud": "https://canton.network.global",
+  "iat": 1787459944,
+  "exp": 1787463544
+}
+```
+
+then sign with secret `unsafe`.
+
+We get JWT token:
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhcHAtdXNlciIsImF1ZCI6Imh0dHBzOi8vY2FudG9uLm5ldHdvcmsuZ2xvYmFsIiwiaWF0IjoxNzg3NDU5OTQ0LCJleHAiOjE3ODc0NjM1NDR9.OjOOxgI5bhcIeQdehQo0NHFQH7owlH5TT9GbxPFaz2Y
+```
+
+Notice in JWT, the first two segments are encoded, not encrypted. The third segment signature is the proof of you are whom you claim.
+
+Some other endpoints:
 
 GET /v0/wallet/user-status - to get user status
 
@@ -746,10 +772,339 @@ GET /v0/wallet/amulets - list UTXO
 
 What API call(s) are required to perform a token standard transfer of Canton Coin?
 
+Step 0: Get the admin ID:
+
+GET http://scan.localhost:4000/registry/metadata/v1/info
+
+adminId = DSO::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b
+
+Step 1: Find out the input UTXO balance from the sender to use
+
+POST http://json-ledger-api.localhost:2000/v2/state/active-contracts
+Auth: app-user JWT
+
+with request body:
+```json
+{
+  "activeAtOffset": 7122,
+  "filter": {
+    "filtersByParty": {
+      "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2": {
+        "cumulative": [{
+          "identifierFilter": {
+            "InterfaceFilter": {
+              "value": {
+                "interfaceId": "#splice-api-token-holding-v2:Splice.Api.Token.HoldingV2:Holding",
+                "includeInterfaceView": true,
+                "includeCreatedEventBlob": true
+              }
+            }
+          }
+        }]
+      }
+    }
+  }
+}
+```
+
+The contract ID: `00438a419301f1b52fdea18324dd84a5eb4ac1f515cf86a75a2d7382079aab34a1ca1212200618e0e580c38d63d213a12eea3e6dcdda05beafee86a46bef93f68de85013c9`
+
+Step 2: Registry: transfer factory (offer context)
+
+POST http://scan.localhost:4000/registry/transfer-instruction/v2/transfer-factory
+
+This request is sending to a registry component. This is to get the factory and choice context for initiating a transfer workflow.
+
+request body:
+
+```json
+{
+  "choiceArguments": {
+    // https://github.com/canton-network/splice/blob/8bc2e0756dd6a8da3fa3de75239021934d210801/token-standard/splice-api-token-transfer-instruction-v2/daml/Splice/Api/Token/TransferInstructionV2.daml#L232
+    "transfer": {
+      "sender": {
+        "owner": "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2",
+        "provider": null,
+        "id": ""
+      },
+      "receiver": {
+        "owner": "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03",
+        "provider": null,
+        "id": ""
+      },
+      "amount": "107.0",
+      "instrumentId": {
+        "admin": "DSO::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+        "id": "Amulet"
+      },
+      "requestedAt": "2026-08-23T06:15:38Z",
+      "executeBefore": "2026-08-24T06:15:48Z",
+      "inputHoldingCids": [
+        "00438a419301f1b52fdea18324dd84a5eb4ac1f515cf86a75a2d7382079aab34a1ca1212200618e0e580c38d63d213a12eea3e6dcdda05beafee86a46bef93f68de85013c9"
+      ],
+      "meta": {
+        "values": {
+          "splice.lfdecentralizedtrust.org/reason": "localnet TS v2 offer 107 AMT"
+        }
+      }
+    },
+    "actors": [
+      "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2"
+    ],
+    "extraArgs": {
+      "context": { "values": {} },
+      "meta": { "values": {} }
+    }
+  },
+  "excludeDebugFields": true
+}
+```
+
+Response:
+
+```json
+{
+  "factoryId": "004807579b29503dae16537ca7bf60a6a5ed5969adf04a0cb24229cad209f9fc20ca12122005916634b793eae07c7ebe43b9c672a381c4dc998122a7519a790e6e524e6ef5",
+  "transferKind": "offer",
+  "choiceContext": {
+    "choiceContextData": {
+      "values": {
+        "open-round": {
+          "tag": "AV_ContractId",
+          "value": "00a75697b9aecac7468e4b3748f0f8a55db3dae4cb0c88c0e6d5a2820012895cfbca121220f86ef1ead30fb6785268165585cbd74674cfcb211c05d2ed1fa631532ed23137"
+        },
+        "external-party-config-state": {
+          "tag": "AV_ContractId",
+          "value": "00df1b2b02b6aa5f6064f20363ffd2d2ebc4da6a51dd39d7245fde6401c294331eca121220d9f8dd35f89109142788c4c0dd405cf4d8452789444aa9aa528efd1a3338f113"
+        },
+        "amulet-rules": {
+          "tag": "AV_ContractId",
+          "value": "00c602c3bfc6fb2f720fdbfc5be5851eafeebb908d23be2c9f446afa3f0a637c74ca1212200fecdd17a23305935cf40f70aaa12b872d1dc370ba496cbc1e6aa456c2ac51b7"
+        }
+      }
+    },
+    "disclosedContracts": [
+      {
+        "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.AmuletRules:AmuletRules",
+        "contractId": "00c602c3bfc6fb2f720fdbfc5be5851eafeebb908d23be2c9f446afa3f0a637c74ca1212200fecdd17a23305935cf40f70aaa12b872d1dc370ba496cbc1e6aa456c2ac51b7",
+        "createdEventBlob": "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",
+        "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+        "debugPackageName": null,
+        "debugPayload": null,
+        "debugCreatedAt": null
+      },
+      {
+        "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.Round:OpenMiningRound",
+        "contractId": "00a75697b9aecac7468e4b3748f0f8a55db3dae4cb0c88c0e6d5a2820012895cfbca121220f86ef1ead30fb6785268165585cbd74674cfcb211c05d2ed1fa631532ed23137",
+        "createdEventBlob": "CgMyLjESlQYKRQCnVpe5rsrHRo5LN0jw+KVds9rkywyIwObVooIAEolc+8oSEiD4bvHq0w+2eFJoFlWFy9dGdM/LIRwF0u0fpjFTLtIxNxINc3BsaWNlLWFtdWxldBpiCkBmYjEwNDMzYTQ4YzI0ZjMwMDc2YTdhZWUwM2EzZTMxNGI3YWIwMmZlOWEyMmUyMDY5ZTNhZjkyZDJiNmFjODhhEgZTcGxpY2USBVJvdW5kGg9PcGVuTWluaW5nUm91bmQi2ANq1QMKTQpLOklEU086OjEyMjA2ZGVjODE3NGM2ZTI0NmVkODJiMDYwNjFlYTlkMmY4ZjE3ZDBkYzA3MjRhZTJhNTAzNGI2YzRmNjRjOTRkMDdiCgsKCWoHCgUKAximBAoQCg4yDDAuMDA1MDAwMDAwMAoLCgkpUpLkJrFZBgAKCwoJKVIea26xWQYACg8KDWoLCgkKBxiAyKGszQkKkgEKjwFqjAEKFgoUahIKEAoOMgwwLjAwMDAwMDAwMDAKFgoUahIKEAoOMgwwLjAwMDAxOTAyNTkKHAoaahgKEAoOMgwwLjAwMDAwMDAwMDAKBAoCWgAKFgoUahIKEAoOMgwwLjAwMDAwMDAwMDAKEAoOMgwxLjAwMDAwMDAwMDAKBQoDGMgBCgUKAxjIAQoECgIYZAqUAQqRAWqOAQoaChgyFjQwMDAwMDAwMDAwLjAwMDAwMDAwMDAKEAoOMgwwLjA1MDAwMDAwMDAKEAoOMgwwLjE1MDAwMDAwMDAKEAoOMgwwLjIwMDAwMDAwMDAKEgoQMg4xMDAuMDAwMDAwMDAwMAoQCg4yDDAuNjAwMDAwMDAwMAoUChJSEAoOMgwyLjg1MDAwMDAwMDAKDgoMagoKCAoGGICYmrwEKklEU086OjEyMjA2ZGVjODE3NGM2ZTI0NmVkODJiMDYwNjFlYTlkMmY4ZjE3ZDBkYzA3MjRhZTJhNTAzNGI2YzRmNjRjOTRkMDdiOVJMIQOxWQYAQioKJgokCAESIMa91qG+9TPnnyJw4oGPK6J2Z/kc8Y5GmxFoyOx7GgbOEB4=",
+        "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+        "debugPackageName": null,
+        "debugPayload": null,
+        "debugCreatedAt": null
+      },
+      {
+        "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.ExternalPartyConfigState:ExternalPartyConfigState",
+        "contractId": "00df1b2b02b6aa5f6064f20363ffd2d2ebc4da6a51dd39d7245fde6401c294331eca121220d9f8dd35f89109142788c4c0dd405cf4d8452789444aa9aa528efd1a3338f113",
+        "createdEventBlob": "CgMyLjESiQQKRQDfGysCtqpfYGTyA2P/0tLrxNpqUd051yRf3mQBwpQzHsoSEiDZ+N01+JEJFCeIxMDdQFz02EUniURKqapSjv0aMzjxExINc3BsaWNlLWFtdWxldBp+CkBmYjEwNDMzYTQ4YzI0ZjMwMDc2YTdhZWUwM2EzZTMxNGI3YWIwMmZlOWEyMmUyMDY5ZTNhZjkyZDJiNmFjODhhEgZTcGxpY2USGEV4dGVybmFsUGFydHlDb25maWdTdGF0ZRoYRXh0ZXJuYWxQYXJ0eUNvbmZpZ1N0YXRlIrABaq0BCk0KSzpJRFNPOjoxMjIwNmRlYzgxNzRjNmUyNDZlZDgyYjA2MDYxZWE5ZDJmOGYxN2QwZGMwNzI0YWUyYTUwMzRiNmM0ZjY0Yzk0ZDA3YgoLCglqBwoFCgMYmgMKEAoOMgwwLjAwNTAwMDAwMDAKMAouaiwKFgoUahIKEAoOMgwwLjAwMDAxOTAyNTkKBQoDGMgBCgUKAxjIAQoECgIYZAoLCgkpBzngv8pZBgAqSURTTzo6MTIyMDZkZWM4MTc0YzZlMjQ2ZWQ4MmIwNjA2MWVhOWQyZjhmMTdkMGRjMDcyNGFlMmE1MDM0YjZjNGY2NGM5NGQwN2I5B3kxhKJZBgBCKgomCiQIARIg0ZXKuhuH93eOkAN1nWXBC6SYthOHK2FmETgZl7alC/sQHg==",
+        "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+        "debugPackageName": null,
+        "debugPayload": null,
+        "debugCreatedAt": null
+      },
+      {
+        "templateId": "fb10433a48c24f30076a7aee03a3e314b7ab02fe9a22e2069e3af92d2b6ac88a:Splice.ExternalPartyAmuletRules:ExternalPartyAmuletRules",
+        "contractId": "004807579b29503dae16537ca7bf60a6a5ed5969adf04a0cb24229cad209f9fc20ca12122005916634b793eae07c7ebe43b9c672a381c4dc998122a7519a790e6e524e6ef5",
+        "createdEventBlob": "CgMyLjESqQMKRQBIB1ebKVA9rhZTfKe/YKal7VlprfBKDLJCKcrSCfn8IMoSEiAFkWY0t5Pq4Hx+vkO5xnKjgcTcmYEip1GaeQ5uUk5u9RINc3BsaWNlLWFtdWxldBp+CkBmYjEwNDMzYTQ4YzI0ZjMwMDc2YTdhZWUwM2EzZTMxNGI3YWIwMmZlOWEyMmUyMDY5ZTNhZjkyZDJiNmFjODhhEgZTcGxpY2USGEV4dGVybmFsUGFydHlBbXVsZXRSdWxlcxoYRXh0ZXJuYWxQYXJ0eUFtdWxldFJ1bGVzIlFqTwpNCks6SURTTzo6MTIyMDZkZWM4MTc0YzZlMjQ2ZWQ4MmIwNjA2MWVhOWQyZjhmMTdkMGRjMDcyNGFlMmE1MDM0YjZjNGY2NGM5NGQwN2IqSURTTzo6MTIyMDZkZWM4MTc0YzZlMjQ2ZWQ4MmIwNjA2MWVhOWQyZjhmMTdkMGRjMDcyNGFlMmE1MDM0YjZjNGY2NGM5NGQwN2I5501G+3hZBgBCKgomCiQIARIgF83CP9JTdQaa3r4X9l9BUBDPLTDBSuJA3TfxabaERUEQHg==",
+        "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+        "debugPackageName": null,
+        "debugPayload": null,
+        "debugCreatedAt": null
+      }
+    ]
+  }
+}
+```
+
+Step 3 - Sender: exercise TransferFactory_Transfer
+
+POST http://json-ledger-api.localhost:2000/v2/commands/submit-and-wait-for-transaction
+
+Auth: app-user JWT
+
+request body
+
+```json
+{
+  "commands": {
+    "commandId": "ts-v2-offer-107-7b9d290b",
+    "userId": "app-user",
+    "actAs": [
+      "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2"
+    ],
+    "readAs": [
+      "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2"
+    ],
+    "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+    "disclosedContracts": [
+      {
+        "templateId": "<from registry>",
+        "contractId": "<from registry>",
+        "createdEventBlob": "<from registry>",
+        "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b"
+      }
+    ],
+    "commands": [{
+      "ExerciseCommand": {
+        "templateId": "#splice-api-token-transfer-instruction-v2:Splice.Api.Token.TransferInstructionV2:TransferFactory",
+        "contractId": "004807579b29503dae16537ca7bf60a6a5ed5969adf04a0cb24229cad209f9fc20ca12122005916634b793eae07c7ebe43b9c672a381c4dc998122a7519a790e6e524e6ef5",
+        "choice": "TransferFactory_Transfer",
+        "choiceArgument": {
+          "transfer": { "...same as step 2..." },
+          "actors": [
+            "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2"
+          ],
+          "extraArgs": {
+            "context": { "...choiceContextData from registry..." },
+            "meta": { "values": {} }
+          }
+        }
+      }
+    }]
+  }
+}
+```
+
+TransferInstruction CID:
+`00cb9f8243226dff0e408553453693f5b62dd6568895616a66debf327809c2f3ebca1212207ea9acb5f18e4f63b7cc630acbf3a362b503b3476648ff15ede3c7eaae10c74e`
+
+Step 4 - Registry: accept choice context
+
+POST http://scan.localhost:4000/registry/transfer-instruction/v2/00cb9f8243226dff0e408553453693f5b62dd6568895616a66debf327809c2f3ebca1212207ea9acb5f18e4f63b7cc630acbf3a362b503b3476648ff15ede3c7eaae10c74e/choice-contexts/accept
+
+You need to get the choice context from the registry first before accepting
+
+request body:
+
+```json
+{ "meta": {}, "excludeDebugFields": true }
+```
+
+
+Response: choiceContextData (includes expire-lock: true, open-round, amulet-rules, …) + disclosed contracts including the LockedAmulet.
+
+Step 5 - Receiver: exercise TransferInstruction_Accept
+
+POST http://canton.localhost:4000/v2/commands/submit-and-wait-for-transaction
+Auth: sv JWT
+
+request body
+
+```json
+{
+  "commands": {
+    "commandId": "ts-v2-accept-107-cbd47cda",
+    "userId": "sv",
+    "actAs": [
+      "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03"
+    ],
+    "readAs": [
+      "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03"
+    ],
+    "synchronizerId": "global-domain::12206dec8174c6e246ed82b06061ea9d2f8f17d0dc0724ae2a5034b6c4f64c94d07b",
+    "disclosedContracts": [ /* from step 4 — keep createdEventBlob */ ],
+    "commands": [{
+      "ExerciseCommand": {
+        "templateId": "#splice-api-token-transfer-instruction-v2:Splice.Api.Token.TransferInstructionV2:TransferInstruction",
+        "contractId": "00cb9f8243226dff0e408553453693f5b62dd6568895616a66debf327809c2f3ebca1212207ea9acb5f18e4f63b7cc630acbf3a362b503b3476648ff15ede3c7eaae10c74e",
+        "choice": "TransferInstruction_Accept",
+        "choiceArgument": {
+          "actors": [
+            "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03"
+          ],
+          "extraArgs": {
+            "context": { /* choiceContextData from step 4 */ },
+            "meta": { "values": {} }
+          }
+        }
+      }
+    }]
+  }
+```
 
 ## Theory - More generally, what role do the token standard APIs play in token standard transfer? Why can’t everything just be done through the ledger API?
 
-## Hands-On - perform a token-standard transfer of Canton Coin using the token standard and ledger APIs.
+The 5-step flow, reframed
+
+| Step | API | What it does |
+|------|-----|--------------|
+| 1 | Ledger API | Read sender holdings (input UTXOs) |
+| 2 | **Registry API** | Resolve factory + choice context |
+| 3 | Ledger API | Sender exercises `TransferFactory_Transfer` |
+| 4 | **Registry API** | Resolve accept context |
+| 5 | Ledger API | Receiver exercises `TransferInstruction_Accept` |
+
+Steps 2 and 4 are registry; 1, 3, and 5 are ledger. The **on-ledger state changes** happen only in steps 3 and 5.
+
+### What role do Token Standard APIs play?
+
+They are the **off-ledger companion** to the on-ledger Daml interfaces (`TransferFactory`, `TransferInstruction`, `Holding`, etc.).
+
+Rough split:
+
+| Token Standard API | Role |
+|--------------------|------|
+| **Metadata** (`/registry/metadata/v1/...`) | Which instrument, admin party, supported API versions |
+| **Holdings** (Scan summary or Ledger ACS) | Portfolio view |
+| **Transfer Instruction** (`/registry/transfer-instruction/v2/...`) | How to *initiate* and *advance* a transfer for this registry |
+
+The registry API answers implementation-specific questions a generic wallet cannot hardcode:
+
+- Which `factoryId` to use right now?
+- `offer` vs `direct` vs `self`?
+- Which contracts must be **disclosed** (`AmuletRules`, `OpenMiningRound`, `LockedAmulet`, …)?
+- What goes in `extraArgs.context` (`open-round`, `amulet-rules`, `expire-lock`, …)?
+
+That is **registry logic**, not ledger logic.
+
+### Why query the registry API specifically?
+
+1. Factory discovery
+   `TransferFactory` is a long-lived registry contract. Wallets should not scan the whole ledger or maintain hardcoded CIDs. The registry returns the current `factoryId`.
+
+2. Dynamic choice context
+   Context depends on **live ledger state** (current mining round, rules contract, locked amulet for accept). The registry reads that state and returns fresh `choiceContextData` + `disclosedContracts`.
+
+3. Cross-participant visibility (explicit disclosure)
+   Sender and receiver often sit on **different participant nodes** (`json-ledger-api.localhost:2000` vs `canton.localhost:4000`). Contracts like `AmuletRules` may not be visible to the submitting party’s node until disclosed. The registry packages the blobs the submitter must attach.
+
+   Without step 2’s disclosed contracts, step 3 would fail with missing-contract / visibility errors.
+
+4. Workflow routing
+   `transferKind: "offer"` vs `"direct"` tells the wallet whether a second accept step is needed. That depends on receiver preapproval — registry logic, not something the raw ledger API exposes cleanly.
+
+5. Interoperability
+   Same wallet flow for Canton Coin, a DA Registry token, or another CIP-56/112 implementation: metadata + transfer-instruction endpoints; implementation details stay in the registry.
+
+### Mental model
+
+```
+┌─────────────────┐     "How do I transfer?"      ┌──────────────────┐
+│  Wallet / App   │ ─────────────────────────────►│  Registry API    │
+│                 │◄───────────────────────────── │  (off-ledger)    │
+└────────┬────────┘   factoryId, context, blobs   └──────────────────┘
+         │
+         │  "Execute this command"
+         ▼
+┌─────────────────┐
+│  Ledger API     │  ← only place that mutates on-ledger state
+│  (participant)  │
+└─────────────────┘
+```
+
+- **Registry** = translator / orchestrator (read-heavy, no auth on Scan in localnet)
+- **Ledger** = authoritative execution layer (auth required, creates/archives contracts)
+
+Step 2 does **not** create the factory; it **looks up** an existing one and prepares the exercise. Step 3 is where the sender actually acts on-ledger.
 
 # Focus: Wallet SDK, wallet gateway
 
