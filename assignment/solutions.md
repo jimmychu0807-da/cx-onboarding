@@ -599,12 +599,12 @@ The first tx is the "sent" side:
 
 - the sender create a transfer instruction, lock his own balance (called Amulet) in Canton space, and have his own free balance updated. Some event logs are also created.
 
-The second tx is the receiver side:
+The second tx is on the receiver side:
 
 - He accepts the transfer instruction (**AmuletTransferInstruction**) created by the sender. Then unlock the locked amulet. A new amulet contract is created to reflect the receiver new balance. Along the way, some event log choices (**EventLog_HoldingsChange**) are being exercised.
 
 
-With the preapproval made, this become a single transaction. 
+With the preapproval made, this become a single transaction.
 
 The receiver will have a **TransferPreapproval** contract created. The sender will exercise the choice **TransferFactory_Transfer** from ExternalPartyAmuletRules, and then call **TransferPreapproval_SendV2** of the receiver TransferPreapproval contract.
 
@@ -612,7 +612,7 @@ Then, a few amulet contracts are created and archived to reflect the latest bala
 
 ## Theory - What ledger commands establish the transfer preapproval? What automations are involved? What Daml design pattern is used here?
 
-The splice-wallet:Splice.Wallet.TransferPreapproval: TransferPreapprovalProposal contract should be first created by the provider, and then the receiver executes the **TransferPreapprovalProposal_Accept** choice. 
+The splice-wallet:Splice.Wallet.TransferPreapproval: TransferPreapprovalProposal contract should be first created by the provider, and then the receiver executes the **TransferPreapprovalProposal_Accept** choice.
 
 The src of the daml code is [seen here](https://github.com/canton-network/splice/blob/main/daml/splice-wallet/daml/Splice/Wallet/TransferPreapproval.daml).
 
@@ -620,6 +620,136 @@ This is the typical propose-accept pattern.
 
 ## Theory - the token standard APIs for metadata, holdings, and transfers. What API call(s) are required to perform a token standard transfer of Canton Coin?
 
+the Token Standard API for metadata:
+
+Requests sent to the super validator node - global synchronizer
+
+Use `GET /registry/metadata/v1/info` to get the DSO party ID.
+
+Use `GET /registry/metadata/v1/instruments` to get all instruments managed by this admin.
+
+In localnet, send the request to `http://scan.localhost:4000` server following the above endpoints, which is handled by the Scan App of the super validator node.
+
+
+### To get user holdings
+
+There are 3 ways to do that:
+
+#### 1. Querying Ledger API
+
+Call 1 - get the current ledger offset:
+
+GET /v2/state/ledger-end
+
+```sh
+curl "${PARTICIPANT_URL}/v2/state/ledger-end" \
+  -H "Authorization: Bearer ${JWT}"
+```
+
+Call 2 - query the contract for the party ID
+
+POST /v2/state/active-contracts
+
+with the following body
+
+```json
+{
+  "activeAtOffset": "<ledger-offset>",
+  "filter": {
+    "filtersByParty": {
+      "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2": {
+        "cumulative": [{
+          "identifierFilter": {
+            "InterfaceFilter": {
+              "value": {
+                "interfaceId": "#splice-api-token-holding-v2:Splice.Api.Token.HoldingV2:Holding",
+                "includeInterfaceView": true,
+                "includeCreatedEventBlob": true
+              }
+            }
+          }
+        }]
+      }
+    }
+  }
+}
+```
+
+#### 2. Scan API
+
+- hitting the super validator 
+- For Scan API, you don't need the authorization bearer token.
+
+In localnet, to get someone holding, call the following:
+
+POST /api/scan/v1/holdings/summary
+
+With the following body:
+
+```json
+{
+  "migration_id": 0,
+  "record_time": "2026-08-21T08:21:00Z",
+  "record_time_match": "at_or_before",
+  "owner_party_ids": [
+    "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03",
+    "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2"
+  ]
+}
+```
+
+- `migration_id` starts at 0 and indicates the protocol upgrade.
+- In localnet, it is mostly 0, there is no protocol upgrade.
+
+Return value:
+
+```json
+{
+  "record_time": "2026-08-22T06:00:00Z",
+  "migration_id": 0,
+  "summaries": [
+    {
+      "party_id": "sv::12208f1ff1f4b32818fe4009163d3d915f5ca6d1950bb22910054988878f99284b03",
+      "total_unlocked_coin": "88021304.0791680000",
+      "total_locked_coin": "0.0000000000",
+      "total_coin_holdings": "88021304.0791680000"
+    },
+    {
+      "party_id": "app_user_localnet-localparty-1::122076f7623d7b1f6789059d1e10f96831b3b1bdc2614ec1337b92a00cea9bc288e2",
+      "total_unlocked_coin": "88680.1600000000",
+      "total_locked_coin": "0.0000000000",
+      "total_coin_holdings": "88680.1600000000"
+    }
+  ]
+}
+```
+
+- It is not getting the latest value, seems, or it is a cached value, not the current holding value, as indicated in the returned "recorded_time".
+
+#### 3. Validator Wallet API
+
+The request is sent to:
+
+GET http://wallet.localhost:2000/api/validator/v0/wallet/balance
+
+This is forwarded to the splice container validator **localhost:2903**.
+
+It doesn't take any request body, and use JWT to recognize which user the sender is checking against. It is not the ledger-api-user jwt token but need to construct another JWT for the particular user that you check.
+
+Another endpoint:
+
+GET /v0/wallet/user-status - to get user status
+
+GET /v0/wallet/amulets - list UTXO
+
+### To perform a transfer using token standard API
+
+What API call(s) are required to perform a token standard transfer of Canton Coin?
+
+
+## Theory - More generally, what role do the token standard APIs play in token standard transfer? Why can’t everything just be done through the ledger API?
+
+## Hands-On - perform a token-standard transfer of Canton Coin using the token standard and ledger APIs.
 
 # Focus: Wallet SDK, wallet gateway
 
