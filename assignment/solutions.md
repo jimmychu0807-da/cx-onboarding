@@ -1106,6 +1106,18 @@ That is **registry logic**, not ledger logic.
 
 Step 2 does **not** create the factory; it **looks up** an existing one and prepares the exercise. Step 3 is where the sender actually acts on-ledger.
 
+# Focus: External Party Hosting
+
+## Hands-On - allocate an external party on localnet
+
+## Theory - what rights does a ledger API user need to submit a command on behalf of an external party?
+
+## Hands-On - submit an externally-signed transaction
+
+https://docs.digitalasset.com/integrate/devnet/preparing-and-signing-transactions/index.html 
+
+## Hands-On - allocate an external party hosted on multiple nodes.
+
 # Focus: Wallet SDK, wallet gateway
 
 # Focus: Registry app and dAppified registry UI
