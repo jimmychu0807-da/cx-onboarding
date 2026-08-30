@@ -1,0 +1,11 @@
+{
+  "synchronizer" : "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75",
+  "onboardingTransactions": [ { "transaction": "Cu4BCAEQARrnAUrkAQpLYWxpY2U6OjEyMjBlNjlhNjQ1OWNiOTAzOTdlMDEyZjkzYzE5YzU3Y2I5NGM5NWYyNmQxODQ3NGQzYzQzMzkyZjNmZDAxZTMzZGQ5EAEaVgpScGFydGljaXBhbnQxOjoxMjIwYzdjZDA5YjhhMDc5YmNhZDgxYzBjYTk0Y2UzZGM2M2IwNDQ0MjgxYzgzYjMzYzNhZjk2NTdjNTE2NDM1NDJmZhACMjsKNxAEGiwwKjAFBgMrZXADIQBfq1QxCChH2BiJLTsDRaIr4dS03n2d53RWYzOANFJX7yoDAQUEMAEQARAe"
+  }],
+  "multiHashSignatures": [{
+     "format" : "SIGNATURE_FORMAT_CONCAT",
+     "signature": "vfexFSYZA8qD9uXIpQ0NXrSff7h7AygvdT4EJzdSxglNNjLxXTZIMJ39rL7wV+oYOJPMQgU4cQCSDjk8TZXjCA==",
+     "signedBy" : "1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9",
+     "signingAlgorithmSpec" : "SIGNING_ALGORITHM_SPEC_ED25519"
+  }]
+}

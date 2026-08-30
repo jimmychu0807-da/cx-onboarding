@@ -1,0 +1,21 @@
+{
+  "update_id": "122050f512cb3aad8412bc408b90d724e3ae9c0eb376bc63ffcd4ea31d296d438483",
+  "update_format": {
+    "include_transactions": {
+      "event_format": {
+        "filters_by_party": {
+          "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9": {
+            "cumulative": [
+              {
+                "wildcard_filter": {
+                  "include_created_event_blob": true
+                }
+              }
+            ]
+          }
+        }
+      },
+      "transaction_shape": "TRANSACTION_SHAPE_ACS_DELTA"
+    }
+  }
+}

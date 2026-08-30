@@ -1,2 +1,5 @@
 /**/.daml
 /**/log
+
+secret*
+private_key*

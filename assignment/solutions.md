@@ -1110,13 +1110,136 @@ Step 2 does **not** create the factory; it **looks up** an existing one and prep
 
 ## Hands-On - allocate an external party on localnet
 
+Refer to the script here:
+https://github.com/digital-asset/canton/blob/main/community/app/src/pack/examples/08-interactive-submission/external_party_onboarding.sh
+
+1. Get the synchronizerId
+   
+   ```sh
+   GET http://json-ledger-api.localhost:2000/v2/state/connected-synchronizers
+   ```
+
+   The synchronizerId: "global-domain::1220bd72c869107de2bfb4e0fa1c80a280935497e1992c7b58a0888152576161edab"
+
+2. Generate a public/private key
+
+3. Send a generate topology requests
+
+   ```sh
+   POST http://json-ledger-api.localhost:2000/v2/parties/external/generate-topology
+   ```
+
+   ```json
+    {
+      "synchronizer" : "global-domain::1220bd72c869107de2bfb4e0fa1c80a280935497e1992c7b58a0888152576161edab",
+      "partyHint" : "jimmychu0807",
+      "publicKey" : {
+        "format" : "CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO",
+        "keyData": "MCowBQYDK2VwAyEA3AB+vSMlgXW4HPdc0ZyLBauZTbXf8JRYDU+L4Q4+2Rk=",
+        "keySpec" : "SIGNING_KEY_SPEC_EC_CURVE25519"
+      },
+      "otherConfirmingParticipantUids" : []
+    }
+   ```
+   
+   Return
+   ```json
+   {
+    "partyId": "jimmychu0807::1220676c8aac018d37ec757ef601f395444e4ce4a46d11f76ed0c1c53c971f8fe1d3",
+    "publicKeyFingerprint": "1220676c8aac018d37ec757ef601f395444e4ce4a46d11f76ed0c1c53c971f8fe1d3",
+    "topologyTransactions": [
+        "CvQBCAEQARrtAUrqAQpSamltbXljaHUwODA3OjoxMjIwNjc2YzhhYWMwMThkMzdlYzc1N2VmNjAxZjM5NTQ0NGU0Y2U0YTQ2ZDExZjc2ZWQwYzFjNTNjOTcxZjhmZTFkMxABGlUKUXBhcnRpY2lwYW50OjoxMjIwNDk1NTgxNTAzM2FmZDE3YmViMGVkZDFjZjA4ZTBmMjNlYzYzZTZhZjcwNTQ5YzE5Y2UxZjA2NTJlNDQyNzNjZBACMjsKNxAEGiwwKjAFBgMrZXADIQDcAH69IyWBdbgc91zRnIsFq5lNtd/wlFgNT4vhDj7ZGSoDAQUEMAEQARAe"
+    ],
+    "multiHash": "EiAG3WRs7xUBjABh7QjR1P0lq1Su1eg0DS7JiLUME7gT8g=="
+   }
+   ```
+
+4. Sign the multi-hash using the private key
+  
+   signature: lSxpJzoN743ffjGftfA6Rougzk4epwN2MKB2R3q3BzKamMUDU3hyOJGZA4pxvdIM5u/ncE/u9ZZdP1z/hWJ0Cw==
+
+5. Submitting onboarding tx
+
+   ```sh
+   POST http://json-ledger-api.localhost:2000/v2/parties/external/allocate
+   ```
+
+   json
+   ```json
+    {
+      "synchronizer" : "global-domain::1220bd72c869107de2bfb4e0fa1c80a280935497e1992c7b58a0888152576161edab",
+      "onboardingTransactions": [
+        { 
+          "transaction": "CvQBCAEQARrtAUrqAQpSamltbXljaHUwODA3OjoxMjIwNjc2YzhhYWMwMThkMzdlYzc1N2VmNjAxZjM5NTQ0NGU0Y2U0YTQ2ZDExZjc2ZWQwYzFjNTNjOTcxZjhmZTFkMxABGlUKUXBhcnRpY2lwYW50OjoxMjIwNDk1NTgxNTAzM2FmZDE3YmViMGVkZDFjZjA4ZTBmMjNlYzYzZTZhZjcwNTQ5YzE5Y2UxZjA2NTJlNDQyNzNjZBACMjsKNxAEGiwwKjAFBgMrZXADIQDcAH69IyWBdbgc91zRnIsFq5lNtd/wlFgNT4vhDj7ZGSoDAQUEMAEQARAe"
+        }
+      ],
+      "multiHashSignatures": [{
+         "format" : "SIGNATURE_FORMAT_CONCAT",
+         "signature": "lSxpJzoN743ffjGftfA6Rougzk4epwN2MKB2R3q3BzKamMUDU3hyOJGZA4pxvdIM5u/ncE/u9ZZdP1z/hWJ0Cw==",
+         "signedBy" : "1220676c8aac018d37ec757ef601f395444e4ce4a46d11f76ed0c1c53c971f8fe1d3",
+         "signingAlgorithmSpec" : "SIGNING_ALGORITHM_SPEC_ED25519"
+      }]
+    }
+   ```
+
+   return
+
+   ```json
+   {
+     "partyId": "jimmychu0807::1220676c8aac018d37ec757ef601f395444e4ce4a46d11f76ed0c1c53c971f8fe1d3"
+   }
+   ```
+
 ## Theory - what rights does a ledger API user need to submit a command on behalf of an external party?
+
+canExecuteAs
 
 ## Hands-On - submit an externally-signed transaction
 
-https://docs.digitalasset.com/integrate/devnet/preparing-and-signing-transactions/index.html 
+major ref:
+- https://docs.canton.network/appdev/deep-dives/external-signing-transactions
+
+The key steps
+
+1. Prepare the transaction, converting from a ledger command to a prepared_transaction obj and transaction hash using gRPC endpoint **com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/PrepareSubmission**.
+
+   For JSON api: [`POST /v2/interactive-submission/prepare`](https://docs.canton.network/reference/json-api-reference/post-v2interactive-submissionprepare)
+
+2. Sign the prepared_transaction_hash with your private key. This become the signature.
+
+3. Submit the prepared transaction with your signature to gRPC endpoint **com.daml.ledger.api.v2.interactive.InteractiveSubmissionService/ExecuteSubmission**.
+
+   The submission retrieves an empty json object `{}`.
+
+   For JSON api: [`POST /v2/interactive-submission/execute`](https://docs.canton.network/reference/json-api-reference/post-v2interactive-submissionexecute)
+
+4. To observe the the update, first get the completion stream using gRPC endpoint **com.daml.ledger.api.v2.CommandCompletionService/CompletionStream**
+
+5. From the completion stream, get the updateID **com.daml.ledger.api.v2.UpdateService/GetUpdateById**.
+
+   Refer to external-signing/interactive-submission directory.
 
 ## Hands-On - allocate an external party hosted on multiple nodes.
+
+If you are allocating an multiple nodes, then 
+
+1. On the generate topology request (`POST /v2/parties/external/generate-topology`), your requst body
+
+   ```json
+    {
+      "synchronizer" : "global-domain::1220bd72c869107de2bfb4e0fa1c80a280935497e1992c7b58a0888152576161edab",
+      "partyHint" : "jimmychu0807",
+      "publicKey" : {
+        "format" : "CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO",
+        "keyData": "MCowBQYDK2VwAyEA3AB+vSMlgXW4HPdc0ZyLBauZTbXf8JRYDU+L4Q4+2Rk=",
+        "keySpec" : "SIGNING_KEY_SPEC_EC_CURVE25519"
+      },
+      "otherConfirmingParticipantUids" : ["another-participant-id1", ...]
+    }
+   ```
+
+2. And submit the external allocate request (`POST /v2/parties/external/allocate`) to all the participant node JSON api.
+
 
 # Focus: Wallet SDK, wallet gateway
 

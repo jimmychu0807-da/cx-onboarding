@@ -1,0 +1,101 @@
+{
+  "prepared_transaction": {
+    "transaction": {
+      "version": "2.1",
+      "roots": [
+        "0"
+      ],
+      "nodes": [
+        {
+          "node_id": "0",
+          "v1": {
+            "create": {
+              "lf_version": "2.1",
+              "contract_id": "00e67420259f9bd32278e492604ac98cfcc4fc251844991fd28edc275f58e5f2ee",
+              "package_name": "canton-builtin-admin-workflow-ping",
+              "template_id": {
+                "package_id": "de2cc2f90eb523414ff54e899951dadd8789a4c07e0f71f6d6c9eaf57d412a54",
+                "module_name": "Canton.Internal.Ping",
+                "entity_name": "Ping"
+              },
+              "argument": {
+                "record": {
+                  "record_id": {
+                    "package_id": "de2cc2f90eb523414ff54e899951dadd8789a4c07e0f71f6d6c9eaf57d412a54",
+                    "module_name": "Canton.Internal.Ping",
+                    "entity_name": "Ping"
+                  },
+                  "fields": [
+                    {
+                      "label": "id",
+                      "value": {
+                        "text": "ping_id"
+                      }
+                    },
+                    {
+                      "label": "initiator",
+                      "value": {
+                        "party": "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"
+                      }
+                    },
+                    {
+                      "label": "responder",
+                      "value": {
+                        "party": "participant2::1220f5707866bbf4bfc9fe5cf01d7bbcab15914c97aac1d6757aa2649ffd605cc1d1"
+                      }
+                    }
+                  ]
+                }
+              },
+              "signatories": [
+                "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"
+              ],
+              "stakeholders": [
+                "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9",
+                "participant2::1220f5707866bbf4bfc9fe5cf01d7bbcab15914c97aac1d6757aa2649ffd605cc1d1"
+              ]
+            }
+          }
+        }
+      ],
+      "node_seeds": [
+        {
+          "node_id": 0,
+          "seed": "8+sO87DymbcyhA9A4FKor94M7TZRfT1pYPpJmd6cTVY="
+        }
+      ]
+    },
+    "metadata": {
+      "submitter_info": {
+        "act_as": [
+          "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"
+        ],
+        "command_id": "f2ec4d8f-ccc1-402b-b278-7556fdd2b412"
+      },
+      "synchronizer_id": "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75::35-0",
+      "mediator_group": 0,
+      "transaction_uuid": "1b62eacb-e50c-4a3c-9e70-b8250ecdc387",
+      "preparation_time": "1788072167760287",
+      "input_contracts": [],
+      "global_key_mapping": []
+    }
+  },
+  "hashing_scheme_version": "HASHING_SCHEME_VERSION_V2",
+  "user_id": "demo_app",
+  "submission_id": "51dd5a0e-2ab6-4ca4-aa9d-9333fb603eb0",
+  "party_signatures": {
+    "signatures": [
+      {
+        "party": "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9",
+        "signatures": [
+          {
+            "format": "SIGNATURE_FORMAT_CONCAT",
+            "signature": "/PpFThCVHzkw0pm+cc5EZ+xuaPjEOpuy2gt1WS2alAnrNApA1JPZkWanXvaPYqiL0ilSh5adteBT+nG8k9OWDA==",
+            "signing_algorithm_spec": "SIGNING_ALGORITHM_SPEC_ED25519",
+            "signed_by": "1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"
+          }
+        ]
+      }
+    ]
+  }
+}

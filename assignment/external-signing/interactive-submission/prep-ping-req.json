@@ -1,0 +1,34 @@
+{
+  "user_id": "demo_app",
+  "command_id": "f2ec4d8f-ccc1-402b-b278-7556fdd2b412",
+  "act_as": ["alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"],
+  "synchronizer_id": "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75",
+  "commands": [
+    {
+      "create": {
+        "template_id": {
+          "package_id": "#canton-builtin-admin-workflow-ping",
+          "module_name": "Canton.Internal.Ping",
+          "entity_name": "Ping"
+        },
+        "create_arguments": {
+          "record_id": null,
+          "fields": [
+            {
+                "label" :"id",
+                "value": { "text": "ping_id" }
+            },
+            {
+                "label" :"initiator",
+                "value": { "party": "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9" }
+            },
+            {
+                "label" :"responder",
+                "value": { "party": "participant2::1220f5707866bbf4bfc9fe5cf01d7bbcab15914c97aac1d6757aa2649ffd605cc1d1" }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "completion": {
+    "command_id": "f2ec4d8f-ccc1-402b-b278-7556fdd2b412",
+    "status": {
+      "code": 0,
+      "message": "",
+      "details": []
+    },
+    "update_id": "122050f512cb3aad8412bc408b90d724e3ae9c0eb376bc63ffcd4ea31d296d438483",
+    "user_id": "demo_app",
+    "act_as": [
+      "alice::1220e69a6459cb90397e012f93c19c57cb94c95f26d18474d3c43392f3fd01e33dd9"
+    ],
+    "submission_id": "51dd5a0e-2ab6-4ca4-aa9d-9333fb603eb0",
+    "deduplication_offset": "0",
+    "trace_context": {
+      "traceparent": "00-e09dc8fea1121ff524e2836fe8bfbb55-326940b932072c59-03"
+    },
+    "offset": "13",
+    "synchronizer_time": {
+      "synchronizer_id": "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75",
+      "record_time": "2026-08-30T09:35:01.320602Z"
+    },
+    "paid_traffic_cost": "0",
+    "transaction_hash": "3BnKG47vRdYMhgl6kkbAGViZY2kWfzb5JyDeqvI6A1I="
+  }
+}
+{
+  "offset_checkpoint": {
+    "offset": "18",
+    "synchronizer_times": [
+      {
+        "synchronizer_id": "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75",
+        "record_time": "2026-08-30T09:35:02.778882Z"
+      }
+    ]
+  }
+}

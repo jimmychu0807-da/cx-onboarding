@@ -1,0 +1,10 @@
+{
+  "synchronizer" : "local::1220beaa24a8d22f8156de4673af9aec2d21bc597c65c8a4a68e7f4762681b80dc75",
+  "partyHint" : "alice",
+  "publicKey" : {
+    "format" : "CRYPTO_KEY_FORMAT_DER_X509_SUBJECT_PUBLIC_KEY_INFO",
+    "keyData": "MCowBQYDK2VwAyEAX6tUMQgoR9gYiS07A0WiK+HUtN59ned0VmMzgDRSV+8=",
+    "keySpec" : "SIGNING_KEY_SPEC_EC_CURVE25519"
+  },
+  "otherConfirmingParticipantUids" : []
+}
