@@ -1,6 +1,8 @@
 # Smart Contract Upgrade and Mugration Upgrade Tool
 
-In Canton network, there is an automatic smart contract upgrade mechanism. For example, say we have the following smart contract.
+last update: 2026 Sep 6th
+
+Canton network has an automatic smart contract upgrade mechanism. For example, say we have the following smart contract.
 
 ```daml
 module Carbon where
@@ -14,7 +16,7 @@ template CarbonCert
     signatory issuer, owner
 ```
 
-Now, we want to upgrade the smart contract by adding a new data field, `expired` of `Date`. To use the automatic smart contract upgrade, we use an Optional field instead of the plain Date time field, i.e. 
+Now we want to upgrade the smart contract by adding a new data field `expired` of `Text`. To use the automatic smart contract upgrade, add an Optional field instead of the plain Text field. For example, as follows: 
 
 ```daml
 module Carbon where
@@ -24,12 +26,12 @@ template CarbonCert
     issuer : Party
     owner : Party
     carbon_metric_tons : Int
-    expired: Optional(Date)
+    expired: Optional(Text)
   where
     signatory issuer, owner
 ```
 
-Now after the new version of the smart contract has been compiled into DAR and upload to the participant node. When you retrieve the same contract, your contract is automatically upgraded with the new `expired` field added with value set to **null**.
+Now after the new version of the smart contract has been compiled into DAR and uploaded to the participant node, when retrieving the same contract, the contract is automatically upgraded with the new `expired` field added with the value set to **null**.
 
 (Automatic) Smart Contract Upgrade (SCU) works in the following conditions:
 
@@ -37,27 +39,25 @@ Now after the new version of the smart contract has been compiled into DAR and u
 - modifying the logic of a choice
 - adding a new choice
 
-
-but it won't work in the following conditions:
+It won't work in the following conditions:
 
 - removing a data field
-- reodering a model data fields
+- reodering model data fields
 - adding a non-optional data field
 - removing a choice
 - changing the interface (input parameters) of a choice
 
 ## Migration Upgrade Tool (MUT)
 
-In the case when you need to perform an upgrade that isn't supported by SCU, Canton team has also built the necessary migration tool so you can upgrade the the contract. 
+In the case it is necessary to perform an upgrade that isn't supported by SCU, Canton team has also built Migration Upgrade Tool (MUT) to manual upgrade the contracts. Users would need to have the [jFrog Artifactory](https://digitalasset.jfrog.io/) with `daml-upgrade` access to download the tool.
 
-It is called Migration Upgrade Tool. Users would need to have the [jFrog Artifactory](https://digitalasset.jfrog.io/) with `daml-upgrade` access to download the tool.
+For an overview, in the migration process, one can fully customize the logic of how old templates are upgraded to the new templates. Then the upgrade admin will specify a party as upgrade-coordinator to initiate the upgrade. The upgrade-coordinator will create upgrade proposals for each of the signatory parties (aka upgraders) in the involved upgrade contracts. All upgraders will then accept the proposals (a set of transactions). Afterwards, make an on-ledger call to exercise the **Upgrade** choice from with upgrader. Finally, two cleanup steps are executed to remove all temporary upgrade artifacts on the ledger.
 
-For an overview, in this migration process, you can fully specify the upgrade logic from each old template to the new template. Then the upgrade admin specify a party as `upgrade-coordinator` to initiate the upgrade. Then the `upgrade-coordinator` will create upgrade proposals for each of the signatory parties (`upgrader`) in the involved upgrade contracts. All `upgrader`s will then accept the proposals. Afterwards, execute the actual `upgrade` (another ledger call), and finally performing the cleanup on the ledger.
-
-The [Migration Upgrade Playbook](https://github.com/jimmychu0807-da/mut-upgrade/blob/main/assets/Migration%20Upgrade%20Playbook.pdf) also comes with the tool. Here I will briefly go over the flow of using the tool. For the detail operational step-by-step guide, please refer to the playbook mentioned above.
+The manual [Migration Upgrade Playbook](https://github.com/jimmychu0807-da/mut-upgrade/blob/main/assets/Migration%20Upgrade%20Playbook.pdf) also comes with the tool. Here I will briefly go over the flow of the usage. For the detail step-by-step operations, please refer to the playbook.
 
 1. Upgrade admin needs to have both the DARs of the old version contracts and new version contracts.
-2. Then run the MUT `codegen` command to generate an upgrade project, something as follows:
+
+2. Then run the MUT `codegen` command to generate an upgrade project, i.e:
 
    ```
    java -jar migration-upgrade-codegen.jar generate \
@@ -69,12 +69,22 @@ The [Migration Upgrade Playbook](https://github.com/jimmychu0807-da/mut-upgrade/
 
 3. Once the `codegen` command has completed, inspect the generated upgrade directory. There are two key sub-directories inside the upgrade project.
    
-   - `daml/Generated` - it is the code on contract upgrade that could automatically run for the upgrade process.
-   - `daml/Upgrade` - it is the code on contract upgrade that need further developer adjustment, i.e. setting the default value or adding custom logic on the contract migration.
+   - `daml/Generated` - this is the contract upgrade code that could automatically run for the upgrade process.
+   - `daml/Upgrade` - this is the contract upgrade code that need further developer adjustment, i.e. setting the default value or adding custom logics on the contract migration.
 
-4. Once the upgrade project have been fine-tuned, compile the upgrade project itself into a DAR.
+4. Once the upgrade project has been fine-tuned, compile the upgrade project itself into a DAR.
 
 5. Now, upload three dars to the participant node. Then the upgrade admin could initiate the upgrade process by sending a on-ledger request with the `upgrade-coordinator` party. Again, for details of the rest of upgrade process (it is a six-step process), please refer to the Migration Upgrade Handbook.
 
+In any case, I hope both smart contract upgrade routes would have met your need when it come at times for you to upgrade your Canton smart contract logics.
+
 ## Reference
 
+Smart Contract Upgrade
+
+- [App Development - Module 6 Smart Contract Upgrades](https://docs.canton.network/appdev/modules/m6-overview) (whole section)
+- [App Development - Deep Dives: Smart Contract Upgrade (SCU)](https://docs.canton.network/appdev/deep-dives/smart-contract-upgrade)
+
+Migration Upgrade Tool
+
+- Migration Upgrade Playbook (download from the [jFrog Artifactory](https://digitalasset.jfrog.io/))
