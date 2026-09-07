@@ -1217,7 +1217,17 @@ The key steps
 
 5. From the completion stream, get the updateID **com.daml.ledger.api.v2.UpdateService/GetUpdateById**.
 
-   Refer to external-signing/interactive-submission directory.
+Refer to external-signing/interactive-submission directory.
+
+Also when using grpcurl, call as following to add the JWT token in.
+
+```sh
+export JWT="...."
+
+cat my-input.json | grpcurl -emit-defaults -plaintext -d @ \
+  -H 'authorization: Bearer ${JWT}' \
+  localhost:4001 com.daml.ledger.api.v2.UpdateService/GetUpdateById
+```
 
 ## Hands-On - allocate an external party hosted on multiple nodes.
 
@@ -1239,7 +1249,6 @@ If you are allocating an multiple nodes, then
    ```
 
 2. And submit the external allocate request (`POST /v2/parties/external/allocate`) to all the participant node JSON api.
-
 
 # Focus: Wallet SDK, wallet gateway
 
