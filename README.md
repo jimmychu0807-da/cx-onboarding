@@ -6,4 +6,4 @@
 
 ## Learning Article Series
 
-- series 1: [Smart Contract Upgrade and Mugration Upgrade Tool](./study-writing/260906-learning.md)
+- series 1: [Smart Contract Upgrade and Mugration Upgrade Tool](./study-writing/260906-learning.md) (wk of 2026 Aug 31)
